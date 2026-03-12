@@ -96,11 +96,7 @@ namespace WaveSabreCore
 
 		static VoiceMode ParamToVoiceMode(float param);
 		static float VoiceModeToParam(VoiceMode type);
-	private:
-		static const int fastSinTabLog2Size = 9; // size = 512
-		static const int fastSinTabSize = (1 << fastSinTabLog2Size);
-		static const int adjustedFastSinTabSize = fastSinTabSize + 1;
-		static double fastSinTab[adjustedFastSinTabSize];
+
 	};
 }
 
