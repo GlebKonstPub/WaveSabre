@@ -172,10 +172,10 @@ namespace WaveSabreCore
 			double baseNote = GetNote() + Detune + falcon->Rise * 24.0f;
 
 			double osc1Input = osc1Phase / Helpers::CurrentSampleRate * 2.0 * 3.141592 + osc1Output * osc1Feedback;
-			osc1Output = ((Helpers::FastSin(osc1Input) + Helpers::Square35(osc1Input) * (double)falcon->osc1Waveform)) * osc1Env.GetValue() * 13.25;
+			osc1Output = Helpers::OpShape(osc1Input, (double)falcon->osc1Waveform) * osc1Env.GetValue() * 13.25;
 
 			double osc2Input = osc2Phase / Helpers::CurrentSampleRate * 2.0 * 3.141592 + osc2Output * osc2Feedback * 13.25 + osc1Output * osc1FeedForwardScalar;
-			osc2Output = ((Helpers::FastSin(osc2Input) + Helpers::Square35(osc2Input) * (double)falcon->osc2Waveform)) * osc2Env.GetValue();
+			osc2Output = Helpers::OpShape(osc2Input, (double)falcon->osc2Waveform) * osc2Env.GetValue();
 
 			float finalOutput = (float)osc2Output * masterLevelScalar;
 			outputs[0][i] += finalOutput * leftPanScalar;

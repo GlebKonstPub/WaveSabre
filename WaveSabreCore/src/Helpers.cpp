@@ -159,22 +159,31 @@ namespace WaveSabreCore
 		return left + (right - left) * fractMix;
 	}
 
-	double Helpers::Square135(double phase)
+	double Helpers::Square135(double phase) // Unused?
 	{
 		return FastSin(phase) +
-			FastSin(phase * 3.0) / 3.0 +
-			FastSin(phase * 5.0) / 5.0;
+			FastSin(phase * 3.0) * (1.0 / 3.0) +
+			FastSin(phase * 5.0) * (1.0 / 5.0);
 	}
 
-	double Helpers::Square35(double phase)
+	double Helpers::Square35(double phase) // Unused?
 	{
-		return FastSin(phase * 3.0) / 3.0 +
-			FastSin(phase * 5.0) / 5.0;
+		return FastSin(phase * 3.0) * (1.0 / 3.0) +
+				FastSin(phase * 5.0) * (1.0 / 5.0);
+	}
+
+	double Helpers::OpShape(double phase, double waveform) {
+		double s = FastSin(phase);
+		double ss = s*s;
+		const double p5 = 3.2;
+		const double p3 = -16.0/3.0;
+		const double p1 = 2.0;
+		return (((p5 * ss + p3) * ss + p1) * waveform + 1.0) * s; //https://www.desmos.com/calculator/lao6woj19u
 	}
 
 	float Helpers::Mix(float v1, float v2, float mix)
 	{
-		return v1 * (1.0f - mix) + v2 * mix;
+		return v1 + (v2 - v1) * mix;
 	}
 
 	float Helpers::Clamp(float f, float min, float max)
@@ -237,25 +246,25 @@ namespace WaveSabreCore
 
 	float Helpers::ParamToQ(float param)
 	{
-		if (param < .5f)
-		{
-			return param / .5f * (1.0f - .33f) + .33f;
+		const float a = 4.0f/3.0f;
+		const float b = 1.0f/3.0f;
+		if (param < .5f) {
+			return param * a + b;
 		}
-		else
-		{
-			return (param - .5f) / .5f * 11.0f + 1.0f;
+		else {
+			return param * 22.0f - 10.0f;
 		}
 	}
 
 	float Helpers::QToParam(float q)
 	{
-		if (q < 1.0f)
-		{
-			return (q - .33f) / (1.0f - .33f) * .5f;
+		const float a = 1.0f/22.0f;
+		const float b = 10.0f/22.0f;
+		if (q < 1.0f) {
+			return 0.75f * q - 0.25f;
 		}
-		else
-		{
-			return (q - 1.0f) / 11.0f * .5f + .5f;
+		else {
+			return a * q + b;
 		}
 	}
 

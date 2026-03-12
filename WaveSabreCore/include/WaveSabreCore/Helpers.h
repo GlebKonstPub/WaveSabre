@@ -52,6 +52,7 @@ namespace WaveSabreCore
 
 		static double Square135(double phase);
 		static double Square35(double phase);
+		static double OpShape(double phase, double waveform);
 
 		static float Mix(float v1, float v2, float mix);
 		static float Clamp(float f, float min, float max);
